@@ -1,10 +1,15 @@
 package com.example.doctorside;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doctorside.AppointmentDetail;
 import com.example.doctorside.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,19 +27,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int IT_IS_DATE = 0;
     private static final int IT_IS_APPOINTMENT = 1;
-    Context context;
     ArrayList<AppointmentDetail>  appointmentDetails ;
     ArrayList<Object> date_app;
-    public RequestedApplicationAdapter(Context context, ArrayList<AppointmentDetail> appointmentDetails){
+    Activity activity;
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
+    public RequestedApplicationAdapter(Activity activity, ArrayList<AppointmentDetail> appointmentDetails){
         this.appointmentDetails = appointmentDetails;
-        this.context = context;
+        this.activity = activity;
         date_app = makeArrayList(appointmentDetails);
-
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
     }
 
     private ArrayList<Object> makeArrayList(ArrayList<AppointmentDetail> appointmentDetails) {
@@ -104,9 +116,11 @@ public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerVi
         {
             ((viewHolder) holder).patientName.setText(((AppointmentDetail)date_app.get(position)).getPatientName());
             ((viewHolder) holder).timeSlot.setText(convertTo12HourFormat(String.valueOf(((AppointmentDetail)date_app.get(position)).getTime())));
+            viewHolder h = (viewHolder) holder;
             ((viewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    showAcceptRejectDialog(h);
 
                 }
             });
@@ -115,6 +129,67 @@ public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerVi
         {
             ((viewHolder2) holder).tv.setText((String)date_app.get(position));
         }
+    }
+
+    private void showAcceptRejectDialog(viewHolder holder) {
+        LayoutInflater inflater = LayoutInflater.from(activity.getApplicationContext());
+        View dialogView = inflater.inflate(R.layout.activity_accept_reject, null);
+
+
+        TextView name, dateDayTime;
+        name = dialogView.findViewById(R.id.accept_reject_patientname);
+        dateDayTime = dialogView.findViewById(R.id.accept_reject_date);
+        ImageView iv = dialogView.findViewById(R.id.download);
+        Button accept, reject;
+        accept = dialogView.findViewById(R.id.accept_button);
+        reject = dialogView.findViewById(R.id.reject_button);
+
+        name.setText(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getPatientName());
+        String str =  ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getDate() + ", " +
+                ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getDay() + ", " +
+                convertTo12HourFormat(String.valueOf(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getTime()));
+
+        dateDayTime.setText(str);
+
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity, R.style.RoundedCornerDialog);
+        dialogBuilder.setView(dialogView);
+        AlertDialog acceptRejectDialog = dialogBuilder.create();
+        acceptRejectDialog.show();
+
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptRejectDialog.dismiss();
+                Map<String,Object> toBeupdated = new HashMap<>();
+                toBeupdated.put("Status", "Confirmed");
+                firebaseFirestore.collection("Appointments").document(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getAppointmentId())
+                        .update(toBeupdated);
+                date_app.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+            }
+        });
+
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptRejectDialog.dismiss();
+                Map<String,Object> toBeupdated = new HashMap<>();
+                toBeupdated.put("Status", "Rejected");
+                firebaseFirestore.collection("Appointments").document(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getAppointmentId())
+                        .update(toBeupdated);
+                date_app.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+            }
+        });
+
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     private static String convertTo12HourFormat(String time) {

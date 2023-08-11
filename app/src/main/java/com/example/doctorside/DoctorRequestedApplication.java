@@ -61,7 +61,7 @@ public class DoctorRequestedApplication extends AppCompatActivity {
                                         appointmentDetailArrayList.add(appointmentDetail);
                                         if(ids.size() == appointmentDetailArrayList.size())
                                         {
-                                            requestedApplicationAdapter = new RequestedApplicationAdapter(getApplicationContext(), appointmentDetailArrayList);
+                                            requestedApplicationAdapter = new RequestedApplicationAdapter(DoctorRequestedApplication.this, appointmentDetailArrayList);
                                             rv.setAdapter(requestedApplicationAdapter);
                                         }
                                     }

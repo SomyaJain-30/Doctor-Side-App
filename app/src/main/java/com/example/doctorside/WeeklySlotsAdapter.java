@@ -56,6 +56,7 @@ public class WeeklySlotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private AlertDialog timePickerDialog;
     private void showTimePickerDialog(WeekSlotCardHolder h) {
         LayoutInflater inflater = LayoutInflater.from(context);
+
         View dialogView = inflater.inflate(R.layout.dialog_time_picker, null);
 
         final TimePicker dialogTimePicker = dialogView.findViewById(R.id.dialogTimePicker);
