@@ -23,10 +23,12 @@ public class WeeklySlotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     Context context;
     ArrayList<Slots> slots;
-    public WeeklySlotsAdapter(Context context, ArrayList<Slots> slots)
+    boolean locked;
+    public WeeklySlotsAdapter(Context context, ArrayList<Slots> slots, boolean locked)
     {
         this.context = context;
         this.slots = slots;
+        this.locked = locked;
     }
     @NonNull
     @Override
@@ -88,9 +90,11 @@ public class WeeklySlotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(v);
             day = v.findViewById(R.id.week_day);
             add = v.findViewById(R.id.addSlot);
+            if(locked)
+                add.setVisibility(View.INVISIBLE);
             time_slots = v.findViewById(R.id.rv_slots);
             time_slots.setLayoutManager(new GridLayoutManager(context, 3));
-            adp = new TimeSlotsAdapter(context);
+            adp = new TimeSlotsAdapter(context,locked);
             time_slots.setAdapter(adp);
         }
 

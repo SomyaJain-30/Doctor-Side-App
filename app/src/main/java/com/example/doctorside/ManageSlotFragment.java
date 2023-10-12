@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ public class ManageSlotFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
+    ImageView lock;
+    boolean locked;
     WeeklySlotsAdapter adapter;
 
     @Override
@@ -42,11 +45,12 @@ public class ManageSlotFragment extends Fragment {
         RecyclerView rv;
         View v =  inflater.inflate(R.layout.fragment_manage_slot, container, false);
         rv = (RecyclerView) v.findViewById(R.id.rv);
+        lock = v.findViewById(R.id.lock);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        locked = true;
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-
+        ArrayList<Slots> sortedSlotsList = new ArrayList<>();
         firebaseFirestore.collection("Doctors").document(firebaseAuth.getCurrentUser().getPhoneNumber())
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -65,18 +69,30 @@ public class ManageSlotFragment extends Fragment {
                             slotsMap.put("Sunday", new ArrayList<>());
                         }
 
-                        ArrayList<Slots> sortedSlotsList = new ArrayList<>();
+
                         for (String day : daysOfWeek) {
                             if (slotsMap.containsKey(day)) {
                                 sortedSlotsList.add(new Slots(day, slotsMap.get(day)));
                             }
                         }
 
-                        adapter = new WeeklySlotsAdapter(getContext(), sortedSlotsList);
+                        adapter = new WeeklySlotsAdapter(getContext(), sortedSlotsList, locked);
                         rv.setAdapter(adapter);
                     }
                 });
 
+        lock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locked = !locked;
+                if(locked)
+                    lock.setImageResource(R.drawable.baseline_lock_open_24);
+                else
+                    lock.setImageResource(R.drawable.baseline_lock_24);
+                adapter = new WeeklySlotsAdapter(getContext(), sortedSlotsList, locked);
+                rv.setAdapter(adapter);
+            }
+        });
 
         return v;
     }

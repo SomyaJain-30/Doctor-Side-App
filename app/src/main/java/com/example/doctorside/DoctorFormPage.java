@@ -38,7 +38,7 @@ public class DoctorFormPage extends AppCompatActivity {
         hellodoctor = (TextView) findViewById(R.id.hello_doctor);
         doctorContinue = (Button) findViewById(R.id.doctor_form_button_continue);
         String doctorname  = getIntent().getStringExtra("name");
-        hellodoctor.setText("Hello Dr. " + doctorname);
+        hellodoctor.setText("Hello " + doctorname);
         doctorSpecialization = (EditText) findViewById(R.id.doctor_specialization);
         doctorClinicAddress = (EditText) findViewById(R.id.doctor_clinic_address);
         doctorEmail = (EditText)findViewById(R.id.doctor_email_address);

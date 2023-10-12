@@ -155,7 +155,7 @@ public class DoctorsLogin extends AppCompatActivity {
                     verifyotpdoctor.setVisibility(View.VISIBLE);
                     sendDatatoFireStore();
                     Intent i = new Intent(DoctorsLogin.this, DoctorFormPage.class);
-                    i.putExtra("name", firstname.getText().toString() + " " + lastname.getText().toString());
+                    i.putExtra("name", "Dr. " + firstname.getText().toString() + " " + lastname.getText().toString());
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
 
@@ -196,7 +196,7 @@ public class DoctorsLogin extends AppCompatActivity {
         DocumentReference documentReference = firebaseFirestore.collection("Doctors").document(firebaseAuth.getCurrentUser().getPhoneNumber());
         Map<String, Object> doctordata = new HashMap<>();
 
-        doctordata.put("Name", firstname.getText().toString() + " " + lastname.getText().toString());
+        doctordata.put("Name", "Dr. " + firstname.getText().toString() + " " + lastname.getText().toString());
         doctordata.put("Specialization", "specialization");
         doctordata.put("Clinic Address", "clinic address");
         doctordata.put("E-mail address" , "email");

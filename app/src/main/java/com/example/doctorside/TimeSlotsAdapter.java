@@ -27,14 +27,16 @@ import java.util.Set;
 public class TimeSlotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     List<String> times;
+    boolean locked;
     List<String> convertedTimes;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
-    public TimeSlotsAdapter(Context context)
+    public TimeSlotsAdapter(Context context, boolean locked)
     {
         this.context = context;
         times = new ArrayList<>();
         convertedTimes = new ArrayList<>();
+        this.locked = locked;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
     }
@@ -118,6 +120,8 @@ public class TimeSlotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(view);
             tv = view.findViewById(R.id.time);
             close = view.findViewById(R.id.close);
+            if(locked)
+                close.setVisibility(View.GONE);
         }
     }
 }

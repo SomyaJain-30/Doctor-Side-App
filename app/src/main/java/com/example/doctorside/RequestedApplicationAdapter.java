@@ -120,7 +120,10 @@ public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerVi
             ((viewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showAcceptRejectDialog(h);
+                    if(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getStatus().equals("Requested"))
+                        showAcceptRejectDialog(h);
+                    else if(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getStatus().equals("Confirmed"))
+                        makeVideoCallDialog(h);
 
                 }
             });
@@ -131,6 +134,42 @@ public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
+    public void makeVideoCallDialog(viewHolder holder)
+    {
+        LayoutInflater inflater = LayoutInflater.from(activity.getApplicationContext());
+        View dialogView = inflater.inflate(R.layout.call_dialog, null);
+
+        TextView name, dateDayTime;
+        name = dialogView.findViewById(R.id.accept_reject_patientname);
+        dateDayTime = dialogView.findViewById(R.id.accept_reject_date);
+        Button call;
+        call = dialogView.findViewById(R.id.join_call);
+
+        name.setText(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getPatientName());
+        String str =  ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getDate() + ", " +
+                ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getDay() + ", " +
+                convertTo12HourFormat(String.valueOf(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getTime()));
+
+        dateDayTime.setText(str);
+
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity, R.style.RoundedCornerDialog);
+        dialogBuilder.setView(dialogView);
+        AlertDialog acceptRejectDialog = dialogBuilder.create();
+        acceptRejectDialog.show();
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent in = new Intent(activity, CallActivity.class);
+                in.putExtra("AId", ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getAppointmentId());
+                in.putExtra("DName", ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getDoctorName());
+                activity.startActivity(in);
+                acceptRejectDialog.dismiss();
+            }
+        });
+    }
     private void showAcceptRejectDialog(viewHolder holder) {
         LayoutInflater inflater = LayoutInflater.from(activity.getApplicationContext());
         View dialogView = inflater.inflate(R.layout.activity_accept_reject, null);

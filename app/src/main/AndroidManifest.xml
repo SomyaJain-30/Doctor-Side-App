@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoctorSide"
         tools:targetApi="31">
-
+        <activity
+            android:name=".CallActivity"
+            android:theme="@style/Theme.MaterialComponents"
+            android:exported="false" />
         <activity
             android:name=".DoctorUpcomingApplication"
             android:exported="false">

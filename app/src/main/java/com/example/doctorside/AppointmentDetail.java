@@ -1,7 +1,7 @@
 package com.example.doctorside;
 
 public class AppointmentDetail {
-    private String patientName, Date, Day, Time, appointmentId, Cid, Did;
+    private String patientName, doctorName, Date, Day, Time, appointmentId, Cid, Did, Status;
 
     public String getPatientName() {
         return patientName;
@@ -57,5 +57,21 @@ public class AppointmentDetail {
 
     public void setDid(String did) {
         Did = did;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 }
