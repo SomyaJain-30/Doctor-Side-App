@@ -206,7 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Yrs"
+                android:text=" Yrs"
                 android:textColor="#000000"
                 android:textSize="20dp" />
         </RelativeLayout>

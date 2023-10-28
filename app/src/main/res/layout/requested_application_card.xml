@@ -2,32 +2,56 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/requested_card_background"
-    android:layout_marginTop="8dp">
+    android:padding="10dp"
+    android:layout_marginTop="5dp">
 
     <TextView
         android:id="@+id/patient_name"
         android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginVertical="3dp"
+        android:textSize="22dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_width="wrap_content"
+        android:layout_marginHorizontal="30dp"
         android:layout_height="wrap_content"
-        android:text="Name"/>
+        android:textColor="@color/white"
+        android:layout_toRightOf="@id/patient_img_cardview" />
 
     <TextView
         android:id="@+id/date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="30dp"
         android:layout_below="@+id/patient_name"
         android:textStyle="bold"
-        android:textSize="16dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@+id/patient_img_cardview"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/patient_img_cardview"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
         android:layout_marginVertical="2dp"
         android:layout_alignParentStart="true"
-        android:text="date day time"/>
+        android:layout_alignParentTop="true"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="60dp">
 
+        <ImageView
+            android:background="@drawable/doctor_image"
+            android:id="@+id/patient_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/doctor_image"
+            android:scaleType="centerCrop"/>
 
-
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

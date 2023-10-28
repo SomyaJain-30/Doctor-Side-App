@@ -83,6 +83,7 @@ public class DoctorFormPage extends AppCompatActivity {
             documentReference.update("Exprience" , doctorExprience.getText().toString());
         }
         documentReference.update("Gender" , ((RadioButton)findViewById(radioGroupDoctor.getCheckedRadioButtonId())).getText().toString());
+        documentReference.update("Profile URL" , "");
 
 
     }

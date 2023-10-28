@@ -75,7 +75,7 @@ public class DoctorProfile extends AppCompatActivity {
                     doctorEmail.setText(data.get("E-mail address").toString());
                     education.setText(data.get("Education").toString());
                     clinicAddress.setText(data.get("Clinic Address").toString());
-                    exprience.setText(data.get("Exprience").toString() + " ");
+                    exprience.setText(data.get("Exprience").toString());
                     doctorContact.setText(firebaseAuth.getCurrentUser().getPhoneNumber().toString());
                     if(data.containsKey("Profile URL"))
                     {
@@ -111,7 +111,7 @@ public class DoctorProfile extends AppCompatActivity {
                 i.putExtra("Exprience" , exprience.getText().toString());
                 i.putExtra("Clinic Address" , clinicAddress.getText().toString());
                 i.putExtra("Profile Uri", imgUri.toString());
-                startActivity(i);
+                startActivityForResult(i, 90);
             }
         });
 
@@ -130,9 +130,9 @@ public class DoctorProfile extends AppCompatActivity {
                 doctorEmail.setText(data.getStringExtra("E-mail address").toString());
                 education.setText(data.getStringExtra("Education").toString());
                 clinicAddress.setText(data.getStringExtra("Clinic Address").toString());
-                exprience.setText(data.getStringExtra("Exprience").toString() + " ");
+                exprience.setText(data.getStringExtra("Exprience").toString());
                 doctorContact.setText(firebaseAuth.getCurrentUser().getPhoneNumber().toString());
-                imgUri = Uri.parse(data.getStringExtra("Uri").toString());
+                imgUri = Uri.parse(data.getStringExtra("Profile URL"));
                 Glide.with(this).load(imgUri).apply(requestOptions).into(profile);
             }
         }

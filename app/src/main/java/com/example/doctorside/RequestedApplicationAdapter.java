@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doctorside.AppointmentDetail;
 import com.example.doctorside.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -114,6 +115,7 @@ public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof viewHolder)
         {
+            Glide.with(activity).load(((AppointmentDetail)date_app.get(position)).getPatientUrl()).into(((viewHolder) holder).imageView);
             ((viewHolder) holder).patientName.setText(((AppointmentDetail)date_app.get(position)).getPatientName());
             ((viewHolder) holder).timeSlot.setText(convertTo12HourFormat(String.valueOf(((AppointmentDetail)date_app.get(position)).getTime())));
             viewHolder h = (viewHolder) holder;
@@ -256,10 +258,12 @@ public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerVi
     private class viewHolder extends RecyclerView.ViewHolder{
         TextView patientName;
         TextView timeSlot;
+        ImageView imageView;
         public viewHolder(View itemView){
             super(itemView);
             patientName = itemView.findViewById(R.id.patient_name);
             timeSlot = itemView.findViewById(R.id.date_text);
+            imageView = itemView.findViewById(R.id.patient_img);
         }
     }
 

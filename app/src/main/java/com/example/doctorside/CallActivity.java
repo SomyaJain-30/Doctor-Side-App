@@ -5,34 +5,46 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallConfig;
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallFragment;
 
 public class CallActivity extends AppCompatActivity {
-
+    FirebaseFirestore firebaseFirestore;
+    FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
         addCallFragment();
     }
 
     public void addCallFragment() {
-        long appID = 14766003;
-        String appSign = "3e8d3e2966ec45a89fd8024dd0a1c38c7d144228ab9a01b958423131b276709a";
+        long appID = 676668581;
+        String appSign = "0cc83247bc735dd3268f76f888aa2608e9646f483d0e670eba16e2bfa905d391";
 
         String callID = "callID_Doctor";
-        String userID = getIntent().getStringExtra("DName");
-        String roomId = getIntent().getStringExtra("AId");
+        firebaseFirestore.collection("Doctors").document(firebaseAuth.getCurrentUser().getPhoneNumber()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String userID = documentSnapshot.get("Name").toString();
+                String userName = getIntent().getStringExtra("AId");
 
-        // You can also use GroupVideo/GroupVoice/OneOnOneVoice to make more types of calls.
-        ZegoUIKitPrebuiltCallConfig config = ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall();
+                // You can also use GroupVideo/GroupVoice/OneOnOneVoice to make more types of calls.
+                ZegoUIKitPrebuiltCallConfig config = ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall();
 
-        ZegoUIKitPrebuiltCallFragment fragment = ZegoUIKitPrebuiltCallFragment.newInstance(
-                appID, appSign, callID, userID, roomId,config);
+                ZegoUIKitPrebuiltCallFragment fragment = ZegoUIKitPrebuiltCallFragment.newInstance(
+                        appID, appSign, callID, userID, userName,config);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.call_fragment_container, fragment)
-                .commitNow();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.call_fragment_container, fragment)
+                        .commitNow();
+            }
+        });
     }
 }

@@ -154,7 +154,7 @@ public class EditDoctorProfile extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             imgUri = uri;
                             documentReference.update("Profile URL", uri);
-                            sendBack();
+                            sendBack(imgUri);
                         }
                     });
                 }
@@ -162,11 +162,11 @@ public class EditDoctorProfile extends AppCompatActivity {
         }
         else
         {
-            sendBack();
+            sendBack(imgUri);
         }
     }
 
-    private void sendBack() {
+    private void sendBack(Uri imgUri) {
         Intent i = new Intent();
         i.putExtra("Name", doctorName.getText().toString());
         i.putExtra("Specialization", specialization.getText().toString());
@@ -175,6 +175,7 @@ public class EditDoctorProfile extends AppCompatActivity {
         i.putExtra("Exprience" , exprience.getText().toString());
         i.putExtra("Gender" , gender.getText().toString());
         i.putExtra("Clinic Address", clinicAddress.getText().toString());
+        i.putExtra("Profile URL", imgUri.toString());
         setResult(RESULT_OK, i);
         dismiss();
         finish();

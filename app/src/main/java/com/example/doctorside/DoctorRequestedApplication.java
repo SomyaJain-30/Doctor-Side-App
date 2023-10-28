@@ -35,50 +35,36 @@ public class DoctorRequestedApplication extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         appointmentDetailArrayList = new ArrayList<>();
 
-
-        firebaseFirestore.collection("Doctors").document(firebaseAuth.getCurrentUser().getPhoneNumber()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        firebaseFirestore.collection("Appointments").whereEqualTo("Did", firebaseAuth.getCurrentUser().getPhoneNumber()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                ids = (List<String>) documentSnapshot.get("Appointments");
-                if(ids == null){
-                    ids = new ArrayList<>();
-                }
-
-                firebaseFirestore.collection("Appointments").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for(DocumentSnapshot d: queryDocumentSnapshots){
-                            if(ids.contains(d.getId())){
-                                if(d.get("Status").toString().equals("Requested"))
-                                {
-                                    cnt++;
-                                    AppointmentDetail appointmentDetail = new AppointmentDetail();
-                                    appointmentDetail.setAppointmentId(d.getId());
-                                    appointmentDetail.setDate(d.get("Date").toString());
-                                    appointmentDetail.setDay(d.get("Day").toString());
-                                    appointmentDetail.setTime(d.get("TimeSlot").toString());
-                                    appointmentDetail.setCid(d.get("Cid").toString());
-                                    appointmentDetail.setDid(d.get("Did").toString());
-                                    appointmentDetail.setStatus(d.get("Status").toString());
-                                    firebaseFirestore.collection("Patients").document(appointmentDetail.getCid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            appointmentDetail.setPatientName(documentSnapshot.get("Name").toString());
-                                            appointmentDetailArrayList.add(appointmentDetail);
-                                            if(cnt == appointmentDetailArrayList.size())
-                                            {
-                                                requestedApplicationAdapter = new RequestedApplicationAdapter(DoctorRequestedApplication.this, appointmentDetailArrayList);
-                                                rv.setAdapter(requestedApplicationAdapter);
-                                            }
-                                        }
-                                    });
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot d : queryDocumentSnapshots) {
+                    if (d.get("Status").toString().equals("Requested")) {
+                        cnt++;
+                        AppointmentDetail appointmentDetail = new AppointmentDetail();
+                        appointmentDetail.setAppointmentId(d.getId());
+                        appointmentDetail.setDate(d.get("Date").toString());
+                        appointmentDetail.setDay(d.get("Day").toString());
+                        appointmentDetail.setTime(d.get("TimeSlot").toString());
+                        appointmentDetail.setCid(d.get("Cid").toString());
+                        appointmentDetail.setDid(d.get("Did").toString());
+                        appointmentDetail.setStatus(d.get("Status").toString());
+                        firebaseFirestore.collection("Patients").document(appointmentDetail.getCid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                appointmentDetail.setPatientName(documentSnapshot.get("Name").toString());
+                                appointmentDetail.setPatientUrl(documentSnapshot.get("Profile URL").toString());
+                                appointmentDetailArrayList.add(appointmentDetail);
+                                if (cnt == appointmentDetailArrayList.size()) {
+                                    requestedApplicationAdapter = new RequestedApplicationAdapter(DoctorRequestedApplication.this, appointmentDetailArrayList);
+                                    rv.setAdapter(requestedApplicationAdapter);
                                 }
                             }
-                        }
+                        });
                     }
-                });
+                }
             }
-        });
 
+        });
     }
 }
