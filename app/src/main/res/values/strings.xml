@@ -2,4 +2,53 @@
     <string name="app_name">DoctorSide</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="Role">
+        <item>Psychiatrist</item>
+        <item>Psychologist</item>
+        <item>Therapist</item>
+        <item>Psychotherapist</item>
+        <item>Counsellor</item>
+    </string-array>
+
+    <string-array name="Specialization">
+        <item>Depression</item>
+        <item>Anxiety</item>
+        <item>Interpersonal Problems</item>
+        <item>Bipolar Disorder</item>
+        <item>De_addication</item>
+        <item>Self Harm</item>
+    </string-array>
+
+    <string-array name="Languages">
+        <item>Hindi</item>
+        <item>English</item>
+        <item>Bengali</item>
+        <item>Telugu</item>
+        <item>Marathi</item>
+        <item>Tamil</item>
+        <item>Urdu</item>
+        <item>Gujarati</item>
+        <item>Kannada</item>
+        <item>Odia</item>
+        <item>Punjabi</item>
+        <item>Malayalam</item>
+        <item>Assamese</item>
+        <item>Rajasthani</item>
+        <item>Kashmiri</item>
+        <item>Sindhi</item>
+        <item>Nepali</item>
+        <item>Konkani</item>
+        <item>Manipuri</item>
+        <item>Dogri</item>
+        <item>Sanskrit</item>
+        <item>Santali</item>
+        <!-- Add more languages as needed -->
+    </string-array>
+
+    <string name="viewpage1">Video consult top doctors from the comfort of your home</string>
+    <string name="viewpage2">Book doctor appointments with the help of chatbots</string>
+    <string name="viewpage3">1 Lakh Indians connect with doctor every year on SSSS</string>
+
 </resources>
+

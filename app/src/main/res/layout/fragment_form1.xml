@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FormFragment1">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingHorizontal="5dp">
+
+        <TextView
+            android:id="@+id/navigate_form1"
+            android:layout_width="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/linearlayout_background"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="2dp"
+            android:text="  1/3  "
+            android:textColor="#214B7C"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="20dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/form_cardview"
+            app:cardCornerRadius="60dp"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/navigate_form1"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:background="@color/white"
+            android:foregroundGravity="center">
+
+            <ImageView
+                android:id="@+id/form_doctor_profile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/ic_baseline_person_24" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/add_profile_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/form_cardview"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:text="Add Photo"
+            android:textAlignment="center"
+            android:textColor="#214B7C"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/doctor_name"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/add_profile_text"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/linearlayout_background"
+            android:drawableLeft="@drawable/ic_baseline_person_24"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textCapWords"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="#555353" />
+
+        <!--        <TextView-->
+
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="20dp"-->
+        <!--            android:layout_marginBottom="10dp"-->
+        <!--            android:text="Clinic Address:"-->
+        <!--            android:textColor="#214B7C"-->
+        <!--            android:textSize="20dp"-->
+        <!--            android:textStyle="bold" />-->
+
+
+        <EditText
+            android:id="@+id/doctor_clinic_address"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/doctor_email_address"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/linearlayout_background"
+            android:drawableLeft="@drawable/ic_baseline_location_city_24"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Clinic Address"
+            android:maxLines="3"
+            android:inputType="textMultiLine"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="#555353" />
+
+
+        <!--        <TextView-->
+
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="20dp"-->
+        <!--            android:layout_marginBottom="10dp"-->
+        <!--            android:text="E-mail Address:"-->
+        <!--            android:textColor="#214B7C"-->
+        <!--            android:textSize="20dp"-->
+        <!--            android:textStyle="bold" />-->
+
+
+        <EditText
+            android:id="@+id/doctor_email_address"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/doctor_name"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/linearlayout_background"
+            android:drawableLeft="@drawable/ic_baseline_email_24"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="E-mail Address"
+            android:inputType="textWebEmailAddress"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="#555353" />
+
+        <!--        <TextView-->
+
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="20dp"-->
+        <!--            android:layout_marginBottom="10dp"-->
+        <!--            android:text="Education:"-->
+        <!--            android:textColor="#214B7C"-->
+        <!--            android:textSize="20dp"-->
+        <!--            android:textStyle="bold" />-->
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/doctor_education"-->
+        <!--            android:layout_width="300dp"-->
+        <!--            android:layout_height="45dp"-->
+        <!--            android:layout_marginLeft="20dp"-->
+        <!--            android:layout_marginRight="20dp"-->
+        <!--            android:layout_marginBottom="15dp"-->
+        <!--            android:background="@color/white"-->
+        <!--            android:ems="10"-->
+        <!--            android:hint="education"-->
+        <!--            android:inputType="text"-->
+        <!--            android:paddingLeft="10dp"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textColorHint="#555353" />-->
+
+        <!--        <TextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="20dp"-->
+        <!--            android:layout_marginBottom="10dp"-->
+        <!--            android:text="Exprience:"-->
+        <!--            android:textColor="#214B7C"-->
+        <!--            android:textSize="20dp"-->
+        <!--            android:textStyle="bold" />-->
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/doctor_exprience"-->
+        <!--            android:layout_width="300dp"-->
+        <!--            android:layout_height="45dp"-->
+        <!--            android:layout_marginHorizontal="20dp"-->
+        <!--            android:layout_marginBottom="15dp"-->
+        <!--            android:background="@color/white"-->
+        <!--            android:ems="10"-->
+        <!--            android:hint="Exprience"-->
+        <!--            android:inputType="number"-->
+        <!--            android:paddingLeft="10dp"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textColorHint="#555353" />-->
+
+        <TextView
+            android:id="@+id/gender_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/doctor_clinic_address"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="Gender:"
+            android:textColor="#214B7C"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/radiogroup_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gender_text"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/doctor_male"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Male"
+                android:textColor="#214B7C"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/doctor_female"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Female"
+                android:textColor="#214B7C"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/doctor_other"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Other"
+                android:textColor="#214B7C"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </RadioGroup>
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

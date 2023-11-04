@@ -1,10 +1,16 @@
 package com.example.doctorside;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,10 +18,20 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -30,6 +46,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EditDoctorProfile extends AppCompatActivity {
     private static final int REQUEST_CODE_SELECT_IMAGE = 100;
@@ -39,16 +58,29 @@ public class EditDoctorProfile extends AppCompatActivity {
     EditText doctorName;
     EditText clinicAddress;
     EditText doctorEmail;
-    EditText specialization;
     EditText education;
     EditText exprience;
+    CheckBox checkBox1;
+    CheckBox checkBox2;
+    CheckBox checkBox3;
+    CheckBox checkBox4;
+    CheckBox checkBox5;
+    ArrayList<String> areaOfSpecialization;
+    GridLayout gridLayout;
+    AutoCompleteTextView role;
+    AutoCompleteTextView language;
+    RecyclerView langRv;
+    LanguageAdapter languageAdapter;
+    List<String> langs;
+    EditText about;
     ImageView profile;
     CardView EditProfileImage;
-    EditText gender;
+    RadioGroup radioGroupGender;
     Button saveChanges;
     Uri imgUri;
     RequestOptions requestOptions;
     DocumentReference documentReference;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +89,64 @@ public class EditDoctorProfile extends AppCompatActivity {
         doctorName = (EditText) findViewById(R.id.doctor_editprofile_name);
         clinicAddress = (EditText) findViewById(R.id.doctor_editprofile_clinicaddress);
         doctorEmail = (EditText) findViewById(R.id.doctor_editprofile_email);
-        specialization = (EditText) findViewById(R.id.doctor_editprofile_specialization);
         education = (EditText) findViewById(R.id.doctor_editprofile_education);
         exprience = (EditText) findViewById(R.id.doctor_editprofile_exprience);
-        gender = (EditText) findViewById(R.id.doctor_editprofile_gender);
+        radioGroupGender = (RadioGroup) findViewById(R.id.radiogroup_editprofile_doctor);
         saveChanges = (Button) findViewById(R.id.doctor_editprofile_savechanges);
         EditProfileImage = (CardView) findViewById(R.id.cardView8);
         profile = (ImageView) findViewById(R.id.profile);
+        role = findViewById(R.id.doctor_editprofile_role);
+        language = findViewById(R.id.doctor_editprofile_language);
+        about = findViewById(R.id.doctor_editprofile_about);
+        checkBox1 = findViewById(R.id.checkbox1);
+        checkBox2 = findViewById(R.id.checkbox2);
+        checkBox3 = findViewById(R.id.checkbox3);
+        checkBox4 = findViewById(R.id.checkbox4);
+        checkBox5 = findViewById(R.id.checkbox5);
+        gridLayout = findViewById(R.id.grid_layout);
+//        radioGroupGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                RadioButton selectedRadioButton = findViewById(checkedId);
+//                if (selectedRadioButton != null) {
+//                    gender = selectedRadioButton.getText().toString();
+//                    // Use selectedText as the text of the selected radio button
+//                }
+//            }
+//        });
+
+        langRv = findViewById(R.id.language_rec);
+
+        language.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Handle the "OK" button click here
+                    // For example, dismiss the keyboard
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(language.getWindowToken(), 0);
+                    String l = language.getText().toString();
+                    List<String> arr = Arrays.asList(getResources().getStringArray(R.array.Languages));
+                    if(arr.contains(l))
+                    {
+                        langs.add(l);
+                        languageAdapter.notifyDataSetChanged();
+                    }
+                    language.setText("");
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        ArrayAdapter<String> adapter_lang = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, getResources().getStringArray(R.array.Languages));
+        language.setAdapter(adapter_lang);
+
+        ArrayAdapter<String> adapter_role = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, getResources().getStringArray(R.array.Role));
+        role.setDropDownHorizontalOffset(-role.getWidth());
+        role.setDropDownWidth(500);
+        role.setDropDownAnchor(R.id.doctor_editprofile_role);
+        role.setAdapter(adapter_role);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -72,23 +155,59 @@ public class EditDoctorProfile extends AppCompatActivity {
         requestOptions = requestOptions.transforms(new CircleCrop());
         imgUri = null;
         String previousName = getIntent().getStringExtra("Name");
-        String previousSpecialization = getIntent().getStringExtra("Specialization");
+        List<String> previousSpecialization = getIntent().getStringArrayListExtra("Specialization");
         String previousEmail = getIntent().getStringExtra("Email");
         String previousGender = getIntent().getStringExtra("Gender");
         String previousEducation = getIntent().getStringExtra("Education");
-        String previousExprience = getIntent().getStringExtra("Exprience");
+        String previousExprience = getIntent().getStringExtra("Experience");
         String previousClinicAddress = getIntent().getStringExtra("Clinic Address");
+        String previousRole = getIntent().getStringExtra("Role");
+        List<String> previousLanguage = getIntent().getStringArrayListExtra("Language");
+        String previousAbout = getIntent().getStringExtra("About");
         if(getIntent().getStringExtra("Profile Uri")!=null)
             imgUri = Uri.parse(getIntent().getStringExtra("Profile Uri"));
 
         doctorName.setText(previousName);
-        specialization.setText(previousSpecialization);
         doctorEmail.setText(previousEmail);
-        gender.setText(previousGender);
         education.setText(previousEducation);
         exprience.setText(previousExprience);
         clinicAddress.setText(previousClinicAddress);
+        role.setText(previousRole);
+        about.setText(previousAbout);
         Glide.with(this).load(imgUri).apply(requestOptions).into(profile);
+
+        langs = new ArrayList<>(previousLanguage);
+        languageAdapter = new LanguageAdapter(this, langs);
+        langRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        langRv.setAdapter(languageAdapter);
+
+        if (previousSpecialization != null) {
+            for (int i = 0; i < gridLayout.getChildCount(); i++) {
+                View view = gridLayout.getChildAt(i);
+                if (view instanceof CheckBox) {
+                    CheckBox checkBox = (CheckBox) view;
+                    String checkBoxText = checkBox.getText().toString();
+
+                    // Check if the CheckBox text is in the selectedCheckBoxText list
+                    if (previousSpecialization.contains(checkBoxText)) {
+                        checkBox.setChecked(true);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < radioGroupGender.getChildCount(); i++) {
+            View view = radioGroupGender.getChildAt(i);
+            if (view instanceof RadioButton) {
+                RadioButton radioButton = (RadioButton) view;
+                if (radioButton.getText().toString().equals(previousGender)) {
+                    // Select the matching RadioButton
+                    radioButton.setChecked(true);
+                    break; // Exit the loop once found
+                }
+            }
+        }
+
         EditProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,8 +219,8 @@ public class EditDoctorProfile extends AppCompatActivity {
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(!doctorName.getText().toString().isEmpty() && !specialization.getText().toString().isEmpty() && !doctorEmail.getText().toString().isEmpty() && !gender.getText().toString().isEmpty() && !education.getText().toString().isEmpty() && !exprience.getText().toString().isEmpty() && !clinicAddress.getText().toString().isEmpty()){
+                boolean flg = checkBox1.isChecked() || checkBox2.isChecked() || checkBox3.isChecked() || checkBox4.isChecked() || checkBox5.isChecked();
+                if(!langs.isEmpty() && flg && !doctorName.getText().toString().isEmpty() && !doctorEmail.getText().toString().isEmpty() && radioGroupGender.getCheckedRadioButtonId() != -1 && !education.getText().toString().isEmpty() && !exprience.getText().toString().isEmpty() && !clinicAddress.getText().toString().isEmpty() && !role.getText().toString().isEmpty() && !about.getText().toString().isEmpty()){
                     sendDataToFireStore();
                 }else{
                     Toast.makeText(EditDoctorProfile.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -114,14 +233,31 @@ public class EditDoctorProfile extends AppCompatActivity {
 
 
     public void sendDataToFireStore(){
+
+        areaOfSpecialization= new ArrayList<>();
+        if(checkBox1.isChecked()){
+            areaOfSpecialization.add(checkBox1.getText().toString());
+        }
+        if(checkBox2.isChecked()){
+            areaOfSpecialization.add(checkBox2.getText().toString());
+        }
+        if(checkBox3.isChecked()){
+            areaOfSpecialization.add(checkBox3.getText().toString());
+        }
+        if(checkBox4.isChecked()){
+            areaOfSpecialization.add(checkBox4.getText().toString());
+        }
+        if(checkBox5.isChecked()){
+            areaOfSpecialization.add(checkBox5.getText().toString());
+        }
         dialogShow();
         documentReference = firebaseFirestore.collection("Doctors").document(firebaseAuth.getCurrentUser().getPhoneNumber());
 
         if(!doctorName.getText().toString().isEmpty()){
             documentReference.update("Name", doctorName.getText().toString());
         }
-        if(!specialization.getText().toString().isEmpty()){
-            documentReference.update("Specialization", specialization.getText().toString());
+        if(!areaOfSpecialization.isEmpty()){
+            documentReference.update("Specialization", areaOfSpecialization);
         }
         if(!doctorEmail.getText().toString().isEmpty()){
             documentReference.update("E-mail address", doctorEmail.getText().toString());
@@ -130,14 +266,25 @@ public class EditDoctorProfile extends AppCompatActivity {
             documentReference.update("Education" , education.getText().toString());
         }
         if(!exprience.getText().toString().isEmpty()){
-            documentReference.update("Exprience" , exprience.getText().toString());
+            documentReference.update("Experience" , exprience.getText().toString());
         }
 
-        if(!gender.getText().toString().isEmpty()){
-            documentReference.update("Gender" , gender.getText().toString());
+        if(radioGroupGender.getCheckedRadioButtonId() != -1){
+            RadioButton selectedRadioButton = findViewById(radioGroupGender.getCheckedRadioButtonId());
+            String text = selectedRadioButton.getText().toString();
+            documentReference.update("Gender" , text);
         }
         if(!clinicAddress.getText().toString().isEmpty()){
             documentReference.update("Clinic Address", clinicAddress.getText().toString());
+        }
+        if(!role.getText().toString().isEmpty()){
+            documentReference.update("Role", role.getText().toString());
+        }
+
+        documentReference.update("Language", langs);
+
+        if(!about.getText().toString().isEmpty()){
+            documentReference.update("About", about.getText().toString());
         }
 
         if(imageData !=null)
@@ -169,13 +316,18 @@ public class EditDoctorProfile extends AppCompatActivity {
     private void sendBack(Uri imgUri) {
         Intent i = new Intent();
         i.putExtra("Name", doctorName.getText().toString());
-        i.putExtra("Specialization", specialization.getText().toString());
+        i.putStringArrayListExtra("Specialization", areaOfSpecialization);
         i.putExtra("E-mail address", doctorEmail.getText().toString());
         i.putExtra("Education" , education.getText().toString());
-        i.putExtra("Exprience" , exprience.getText().toString());
-        i.putExtra("Gender" , gender.getText().toString());
+        i.putExtra("Experience" , exprience.getText().toString());
+        RadioButton selectedRadioButton = findViewById(radioGroupGender.getCheckedRadioButtonId());
+        String gender = selectedRadioButton.getText().toString();
+        i.putExtra("Gender" , gender);
         i.putExtra("Clinic Address", clinicAddress.getText().toString());
         i.putExtra("Profile URL", imgUri.toString());
+        i.putExtra("Role", role.getText().toString());
+        i.putStringArrayListExtra("Language", (ArrayList<String>) langs);
+        i.putExtra("About", about.getText().toString());
         setResult(RESULT_OK, i);
         dismiss();
         finish();

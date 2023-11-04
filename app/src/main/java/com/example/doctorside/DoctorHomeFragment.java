@@ -20,6 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.ktx.Firebase;
 
 
 public class DoctorHomeFragment extends Fragment {
@@ -27,12 +29,13 @@ public class DoctorHomeFragment extends Fragment {
     ImageView menu;
     CardView requestedApplication;
     CardView upcomingApplication;
+    FirebaseAuth firebaseAuth;
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        firebaseAuth = FirebaseAuth.getInstance();
         View v = inflater.inflate(R.layout.fragment_doctor_home, container, false);
         toolbar = v.findViewById(R.id.doctor_home_toolbar);
         menu = v.findViewById(R.id.menu);
@@ -77,7 +80,10 @@ public class DoctorHomeFragment extends Fragment {
                     startActivity(i);
                     return true;
                 }else if(id == R.id.doctor_logout){
-                    Toast.makeText(getContext(), "This is logout button", Toast.LENGTH_SHORT).show();
+                    firebaseAuth.signOut();
+                    Intent i = new Intent(getContext(), DoctorsLogin.class);
+                    startActivity(i);
+                    Toast.makeText(getContext(), "Logout Successfully", Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 else

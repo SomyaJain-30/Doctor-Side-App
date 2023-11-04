@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FormFragment2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/navigate_form2"
+                android:layout_width="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/linearlayout_background"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="2dp"
+                android:text="  2/3  "
+                android:textColor="#214B7C"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="20dp" />
+
+            <EditText
+                android:id="@+id/doctor_education"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="70dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/linearlayout_background"
+                android:drawableLeft="@drawable/ic_baseline_school_24"
+                android:drawablePadding="10dp"
+                android:paddingLeft="15dp"
+                android:ems="10"
+                android:hint="Education"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="#555353"
+                android:layout_below="@+id/navigate_form2"/>
+
+            <RelativeLayout
+                android:id="@+id/role_relative"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:padding="5dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/doctor_education"
+                android:background="@drawable/linearlayout_background">
+
+                <AutoCompleteTextView
+                    android:id="@+id/doctor_role"
+                    android:layout_width="300dp"
+                    android:layout_height="45dp"
+                    android:drawableLeft="@drawable/ic_baseline_assignment_ind_24"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:completionThreshold="0"
+                    android:hint="Role"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/edittext_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#555353" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/specialization_relative"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/role_relative"
+                android:background="@drawable/linearlayout_background">
+                <AutoCompleteTextView
+                    android:id="@+id/doctor_specialization"
+                    android:layout_width="300dp"
+                    android:layout_height="45dp"
+                    android:drawableLeft="@drawable/ic_baseline_medical_information_24"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:text="Area of Specialization"
+                    android:editable="false"
+                    android:completionThreshold="0"
+                    android:inputType="none"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:paddingLeft="10dp"
+                    android:textSize="18dp"
+                    android:background="@drawable/edittext_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#555353" />
+
+                <GridLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/grid_layout"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/doctor_specialization"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:columnCount="2"
+                    android:rowCount="3">
+
+                    <CheckBox
+                        android:id="@+id/checkbox1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_margin="5dp"
+                        android:text="Anxiety"/>
+
+                    <CheckBox
+                        android:id="@+id/checkbox2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_margin="5dp"
+                        android:text="Depression"/>
+
+                    <CheckBox
+                        android:id="@+id/checkbox3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_margin="5dp"
+                        android:text="De-Addiction"/>
+
+                    <CheckBox
+                        android:id="@+id/checkbox4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_margin="5dp"
+                        android:text="Bipolar Disorder"/>
+
+                    <CheckBox
+                        android:id="@+id/checkbox5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_margin="5dp"
+                        android:text="Self-Harm"/>
+                </GridLayout>
+
+            </RelativeLayout>
+
+            <AutoCompleteTextView
+                android:id="@+id/doctor_experience"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/linearlayout_background"
+                android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
+                android:drawablePadding="10dp"
+                android:paddingLeft="15dp"
+                android:ems="10"
+                android:hint="Experience in yrs"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textColorHint="#555353"
+                android:layout_below="@+id/specialization_relative"/>
+
+            <RelativeLayout
+                android:id="@+id/language_relative"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:padding="5dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="15dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/doctor_experience"
+                android:background="@drawable/linearlayout_background">
+                <AutoCompleteTextView
+                    android:id="@+id/doctor_language"
+                    android:layout_width="280dp"
+                    android:layout_height="45dp"
+                    android:drawableLeft="@drawable/ic_baseline_language_24"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="Language Proficiency"
+                    android:completionThreshold="0"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/edittext_background"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/black"
+                    android:textColorHint="#555353" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/language_rec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_below="@+id/language_relative" />
+
+            <MultiAutoCompleteTextView
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/doctor_about"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:lines="5"
+                android:hint="About yourself"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:background="@drawable/linearlayout_background"
+                android:textColor="@color/black"
+                android:textColorHint="#555353"
+                android:layout_below="@+id/language_rec"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</FrameLayout>

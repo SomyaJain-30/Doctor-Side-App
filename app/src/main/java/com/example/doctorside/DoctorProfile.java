@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -25,6 +26,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class DoctorProfile extends AppCompatActivity {
@@ -36,12 +41,16 @@ public class DoctorProfile extends AppCompatActivity {
     TextView education;
     TextView exprience;
     TextView gender;
+    TextView role;
+    TextView language;
+    TextView about;
     ImageView profile;
     Button doctorEditProfileButton;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     Uri imgUri;
     RequestOptions requestOptions;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +64,9 @@ public class DoctorProfile extends AppCompatActivity {
         exprience = findViewById(R.id.exprience_doctor_fragment_profile);
         doctorEmail = findViewById(R.id.email_doctor_fragment_profile);
         gender = findViewById(R.id.gender_doctor_fragment_profile);
+        role = findViewById(R.id.doctor_role);
+        language = findViewById(R.id.language_doctor);
+        about = findViewById(R.id.about_doctor_fragment_profile);
         doctorEditProfileButton = findViewById(R.id.edit_profile_fragment_profile);
         profile = findViewById(R.id.profile);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -70,13 +82,19 @@ public class DoctorProfile extends AppCompatActivity {
                 if (documentSnapshot.exists()) {
                     Map<String, Object> data = documentSnapshot.getData();
                     gender.setText(data.get("Gender").toString());
-                    specialization.setText(data.get("Specialization").toString());
+                    List<String> specializationList = (ArrayList) data.get("Specialization");
+                    specialization.setText(String.join(", ", specializationList));
                     doctorName.setText(data.get("Name").toString());
                     doctorEmail.setText(data.get("E-mail address").toString());
                     education.setText(data.get("Education").toString());
                     clinicAddress.setText(data.get("Clinic Address").toString());
-                    exprience.setText(data.get("Exprience").toString());
+                    exprience.setText(data.get("Experience").toString());
                     doctorContact.setText(firebaseAuth.getCurrentUser().getPhoneNumber().toString());
+                    role.setText(data.get("Role").toString());
+                    List<String> languageList = (ArrayList) data.get("Language");
+                    language.setText(String.join(", ", languageList));
+                    System.out.println(data.get("About").toString());
+                    about.setText(data.get("About").toString());
                     if(data.containsKey("Profile URL"))
                     {
                         imgUri = Uri.parse(data.get("Profile URL").toString());
@@ -95,6 +113,9 @@ public class DoctorProfile extends AppCompatActivity {
                 clinicAddress.setText("NaN");
                 exprience.setText("NaN");
                 doctorContact.setText("NaN");
+                role.setText("NaN");
+                language.setText("NaN");
+                about.setText("NaN");
                 Toast.makeText(DoctorProfile.this, "Error fetching data, try again!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -104,13 +125,20 @@ public class DoctorProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(DoctorProfile.this, EditDoctorProfile.class);
                 i.putExtra("Name" , doctorName.getText().toString());
-                i.putExtra("Specialization" , specialization.getText().toString());
+                String[] specializationWords = specialization.getText().toString().split(", ");
+                ArrayList<String> specializationList = new ArrayList<>(Arrays.asList(specializationWords));
+                String[] langWords = language.getText().toString().split(", ");
+                ArrayList<String> langList = new ArrayList<>(Arrays.asList(langWords));
+                i.putStringArrayListExtra("Specialization" , specializationList);
                 i.putExtra("Email", doctorEmail.getText().toString());
                 i.putExtra("Gender" , gender.getText().toString());
                 i.putExtra("Education" , education.getText().toString());
-                i.putExtra("Exprience" , exprience.getText().toString());
+                i.putExtra("Experience" , exprience.getText().toString());
                 i.putExtra("Clinic Address" , clinicAddress.getText().toString());
                 i.putExtra("Profile Uri", imgUri.toString());
+                i.putExtra("Role", role.getText().toString());
+                i.putStringArrayListExtra("Language",langList);
+                i.putExtra("About", about.getText().toString());
                 startActivityForResult(i, 90);
             }
         });
@@ -124,14 +152,18 @@ public class DoctorProfile extends AppCompatActivity {
         {
             if(requestCode==90)
             {
-                gender.setText(data.getStringExtra("Gender").toString());
-                specialization.setText(data.getStringExtra("Specialization").toString());
-                doctorName.setText(data.getStringExtra("Name").toString());
-                doctorEmail.setText(data.getStringExtra("E-mail address").toString());
-                education.setText(data.getStringExtra("Education").toString());
-                clinicAddress.setText(data.getStringExtra("Clinic Address").toString());
-                exprience.setText(data.getStringExtra("Exprience").toString());
-                doctorContact.setText(firebaseAuth.getCurrentUser().getPhoneNumber().toString());
+                gender.setText(data.getStringExtra("Gender"));
+                ArrayList<String> specializationList = data.getStringArrayListExtra("Specialization");
+                specialization.setText(String.join(", ", specializationList));
+                doctorName.setText(data.getStringExtra("Name"));
+                doctorEmail.setText(data.getStringExtra("E-mail address"));
+                education.setText(data.getStringExtra("Education"));
+                clinicAddress.setText(data.getStringExtra("Clinic Address"));
+                exprience.setText(data.getStringExtra("Experience"));
+                doctorContact.setText(firebaseAuth.getCurrentUser().getPhoneNumber());
+                role.setText(data.getStringExtra("Role"));
+                language.setText(String.join(", ", data.getStringArrayListExtra("Language")));
+                about.setText(data.getStringExtra("About"));
                 imgUri = Uri.parse(data.getStringExtra("Profile URL"));
                 Glide.with(this).load(imgUri).apply(requestOptions).into(profile);
             }
