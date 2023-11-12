@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:paddingVertical="20dp"
+    android:paddingVertical="10dp"
     android:layout_height="wrap_content"
     android:background="@drawable/accept_reject_background">
 
-    <TextView
-        android:id="@+id/accept_reject_patientname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Patient Name"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="20dp"></TextView>
     <TextView
         android:id="@+id/accept_reject_date"
         android:layout_width="wrap_content"
@@ -24,30 +13,29 @@
         android:textStyle="bold"
         android:textSize="16dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/accept_reject_patientname"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="5dp"></TextView>
-
-    <ImageView
-        android:id="@+id/download"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_file_download_24"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="25dp"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="30dp">
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="5dp"/>
 
-    </ImageView>
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdf"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/edittext_background"
+        android:layout_below="@+id/accept_reject_date"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_centerHorizontal="true">
+    </com.github.barteksc.pdfviewer.PDFView>
 
 
     <Button
         android:id="@+id/accept_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/accept_reject_date"
+        android:layout_below="@+id/pdf"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_alignParentStart="true"
         android:layout_marginRight="80dp"
         android:background="@drawable/background_button"
@@ -59,11 +47,11 @@
         android:id="@+id/reject_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="50dp"
         android:background="@drawable/background_button"
-        android:layout_below="@+id/accept_reject_date"
+        android:layout_below="@+id/pdf"
         android:textColor="@color/white"
         android:layout_marginBottom="20dp"
         android:text="Reject"></Button>

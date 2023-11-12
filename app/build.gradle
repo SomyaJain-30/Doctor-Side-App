@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.doctorside'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.doctorside"
         minSdk 26
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -45,6 +45,8 @@ dependencies {
 //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
 
 //    implementation 'org.mongodb:mongodb-driver-sync:4.3.4'
 //    implementation 'androidx.appcompat:appcompat:1.6.0'

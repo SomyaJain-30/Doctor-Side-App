@@ -1,7 +1,10 @@
 package com.example.doctorside;
 
+import android.net.Uri;
+
 public class AppointmentDetail {
     private String patientName, doctorName, Date, Day, Time, appointmentId, Cid, Did, Status, patientUrl;
+    private String proforma=null;
 
     public String getPatientName() {
         return patientName;
@@ -81,5 +84,13 @@ public class AppointmentDetail {
 
     public void setPatientUrl(String patientUrl) {
         this.patientUrl = patientUrl;
+    }
+
+    public String getProforma() {
+        return proforma;
+    }
+
+    public void setProforma(String proforma) {
+        this.proforma = proforma;
     }
 }

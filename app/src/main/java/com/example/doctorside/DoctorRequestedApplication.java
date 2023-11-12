@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +50,11 @@ public class DoctorRequestedApplication extends AppCompatActivity {
                         appointmentDetail.setCid(d.get("Cid").toString());
                         appointmentDetail.setDid(d.get("Did").toString());
                         appointmentDetail.setStatus(d.get("Status").toString());
+                        System.out.println(d.get("Proforma"));
+                        if(d.get("Proforma")!=null)
+                        {
+                            appointmentDetail.setProforma((d.get("Proforma").toString()));
+                        }
                         firebaseFirestore.collection("Patients").document(appointmentDetail.getCid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {

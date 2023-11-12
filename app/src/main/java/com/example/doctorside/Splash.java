@@ -36,6 +36,7 @@ public class Splash extends AppCompatActivity {
         if(FirebaseAuth.getInstance().getCurrentUser()!=null)
         {
             checkIfDoctorAlreadyExist(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
+            System.out.println(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
         }
         else
         {

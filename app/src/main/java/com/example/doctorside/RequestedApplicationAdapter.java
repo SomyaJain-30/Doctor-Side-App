@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.doctorside.AppointmentDetail;
 import com.example.doctorside.R;
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -178,14 +187,16 @@ public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerVi
 
 
         TextView name, dateDayTime;
-        name = dialogView.findViewById(R.id.accept_reject_patientname);
         dateDayTime = dialogView.findViewById(R.id.accept_reject_date);
-        ImageView iv = dialogView.findViewById(R.id.download);
+        PDFView pdfView = dialogView.findViewById(R.id.pdf);
+
         Button accept, reject;
         accept = dialogView.findViewById(R.id.accept_button);
         reject = dialogView.findViewById(R.id.reject_button);
 
-        name.setText(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getPatientName());
+        String uri = ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getProforma();
+        fetchFromStorage(uri, pdfView);
+
         String str =  ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getDate() + ", " +
                 ((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getDay() + ", " +
                 convertTo12HourFormat(String.valueOf(((AppointmentDetail)date_app.get(holder.getAdapterPosition())).getTime()));
@@ -224,13 +235,24 @@ public class RequestedApplicationAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         });
 
-        iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
 
-            }
-        });
+    public void fetchFromStorage(String url, PDFView pdfView)
+    {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
 
+        final File localFile = new File(activity.getExternalFilesDir(null), "downloaded_pdf.pdf");
+
+        StorageTask storageTask = storageReference.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        // File downloaded successfully
+                        // Load the PDF into the PDFView
+                        Uri localFileUri = Uri.fromFile(localFile);
+                        pdfView.fromUri(localFileUri).load();
+                    }
+                });
     }
 
     private static String convertTo12HourFormat(String time) {

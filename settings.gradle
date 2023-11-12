@@ -12,6 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://storage.zego.im/maven' }   // <- Add this line.
         maven { url 'https://www.jitpack.io' }
+        maven { url "https://jcenter.bintray.com"}
     }
 }
 rootProject.name = "DoctorSide"
